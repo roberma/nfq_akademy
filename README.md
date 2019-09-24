@@ -23,6 +23,8 @@ client - skirta lankytojų duomenims saugoti. Saugoma tokia informacija, kaip va
 visit - skirta apsilankymo duomenims saugoti (buvo projektuota ateities praplėtimui, kad būtų galima saugoti informaciją apie apsilankymo trukmę.)
 
 prisijungti prie puslapio galima adresu:
-nfq.epizy.com/
+http://nfq.epizy.com/admin.php
+http://nfq.epizy.com/display.php
+http://nfq.epizy.com/login.php
 
 
