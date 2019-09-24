@@ -1,0 +1,97 @@
+# create database
+CREATE DATABASE queue;
+
+# select database
+USE queue;
+
+# create table specialisation
+CREATE TABLE specialisation (
+    sp_id smallint not null auto_increment primary key,
+    specialisation varchar(30) not null unique
+);
+
+# create table specialist
+CREATE TABLE specialist (
+    s_id int not null auto_increment primary key,
+    name varchar (30) not null,
+    surname varchar (50) not null,
+    sp_id smallint not null,
+    place int not null,
+    email varchar (50) not null unique,
+    pass char (60) not null,
+    foreign key (sp_id) references specialisation(sp_id)
+);
+
+# create table client
+CREATE TABLE client (
+    c_id int not null auto_increment primary key,
+    name  varchar(30) not null,
+    surname varchar(50) not null,
+    sp_id smallint not null,
+    number varchar(5) not null,
+    reg_date date not null,
+    reg_time time not null,
+    foreign key (sp_id) references specialisation(sp_id)
+);
+
+# create table visit
+CREATE TABLE visit (
+    id int not null auto_increment primary key,
+    date date not null,
+    time time not null,
+    duration int not null,
+    client int not null,
+    specialist int not null,
+    foreign key (client) references client(c_id),
+    foreign key (specialist) references specialist(s_id)
+);
+
+# insert values into specialisation table
+INSERT INTO specialisation VALUES (null, 'Chirurgas');
+INSERT INTO specialisation VALUES (null, 'Pediatras');
+INSERT INTO specialisation VALUES (null, 'Ortopedas');
+INSERT INTO specialisation VALUES (null, 'Oftalmologas');
+INSERT INTO specialisation VALUES (null, 'Akušeris ginekologas');
+
+# insert values into specialist table, default password hash created from default password "p@ssw0rd"
+INSERT INTO specialist
+VALUES (null, 'Robertas', 'Bagdzevičius', 1, 101, 'robbag@example.com', '$2y$10$Dd7izluSvmgk5aPtdzZkxOsI9Va9uPUAce2oupBUvcVWlRA3G5sRe');
+INSERT INTO specialist
+VALUES (null, 'Jolita', 'Statkuvienė', 2, 201, 'jolsta@example.com', '$2y$10$Dd7izluSvmgk5aPtdzZkxOsI9Va9uPUAce2oupBUvcVWlRA3G5sRe');
+INSERT INTO specialist
+VALUES (null, 'Vidmantas', 'Barauskas', 1, 102, 'vidbar@example.com', '$2y$10$Dd7izluSvmgk5aPtdzZkxOsI9Va9uPUAce2oupBUvcVWlRA3G5sRe');
+INSERT INTO specialist
+VALUES (null, 'Emilis', 'Čekanauskas', 3, 103, 'emicek@example.com', '$2y$10$Dd7izluSvmgk5aPtdzZkxOsI9Va9uPUAce2oupBUvcVWlRA3G5sRe');
+INSERT INTO specialist
+VALUES (null, 'Rasa', 'Liutkevičienė', 4, 104, 'rasliu@example.com', '$2y$10$Dd7izluSvmgk5aPtdzZkxOsI9Va9uPUAce2oupBUvcVWlRA3G5sRe');
+INSERT INTO specialist
+VALUES (null, 'Valdonė', 'Kumžienė', 2, 202, 'valkum@example.com', '$2y$10$Dd7izluSvmgk5aPtdzZkxOsI9Va9uPUAce2oupBUvcVWlRA3G5sRe');
+INSERT INTO specialist
+VALUES (null, 'Meilė', 'Minkauskienė', 5, 105, 'meimin@example.com', '$2y$10$Dd7izluSvmgk5aPtdzZkxOsI9Va9uPUAce2oupBUvcVWlRA3G5sRe');
+
+# insert values into client table
+INSERT INTO client VALUES (null, 'Robertas', 'Mažeika', 1, 'A0001', '2019-09-23' , '16:18:41');
+INSERT INTO client VALUES (null, 'Paulius', 'Miliušis', 3, 'C0001', '2019-09-23' , '16:18:58');
+INSERT INTO client VALUES (null, 'Gintarė', 'Čiečkienė', 2, 'B0001', '2019-09-23' , '16:19:19');
+INSERT INTO client VALUES (null, 'Vytautas', 'Bunikis', 3, 'C0002', '2019-09-23' , '16:19:34');
+INSERT INTO client VALUES (null, 'Egidijus', 'Kudirka', 1, 'A0002', '2019-09-23' , '16:20:42');
+INSERT INTO client VALUES (null, 'Julius', 'Merčaitis', 1, 'A0003', '2019-09-23' , '16:35:10');
+INSERT INTO client VALUES (null, 'Brigita', 'Mažeikienė', 4, 'D0001', '2019-09-23' , '16:35:30');
+INSERT INTO client VALUES (null, 'Vaiva', 'Kankevičienė', 2, 'B0002', '2019-09-23' , '16:35:52');
+INSERT INTO client VALUES (null, 'Justina', 'Frankaitė', 5, 'E0001', '2019-09-23' , '16:36:12');
+INSERT INTO client VALUES (null, 'Audrius', 'Valinčius', 3, 'C0003', '2019-09-23' , '16:36:30');
+INSERT INTO client VALUES (null, 'Audrius', 'Daunys', 4, 'D0002', '2019-09-23' , '16:37:20');
+INSERT INTO client VALUES (null, 'Aušra', 'Zajančiauskaitė', 5, 'E0002', '2019-09-23' , '16:37:53');
+INSERT INTO client VALUES (null, 'Lina', 'Morkūnienė', 5, 'E0003', '2019-09-23' , '16:38:38');
+
+SELECT * FROM specialisation;
+SELECT * FROM specialist;
+DROP table specialist;
+DROP table client;
+SELECT * FROM client;
+SELECT * FROM specialist WHERE sp_id = 2 ORDER BY place DESC LIMIT 1;
+SELECT number FROM client WHERE sp_id ='$sp' ORDER BY number DESC LIMIT 1;
+SELECT *  FROM client order by number limit 10;
+SELECT * FROM client join (specialisation) on client.sp_id = specialisation.sp_id order by c_id limit 10;
+UPDATE specialist SET pass = '$2y$10$Dd7izluSvmgk5aPtdzZkxOsI9Va9uPUAce2oupBUvcVWlRA3G5sRe' WHERE s_id > 1;
+SELECT * FROM client WHERE sp_id =1 limit 1;
